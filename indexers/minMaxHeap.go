@@ -29,6 +29,10 @@ func (h *MinMaxHeap) Size() int {
 	return h.queryHeap.Size() + h.bigHeap.Size()
 }
 
+func (h *MinMaxHeap) AddById(id int, key int) {
+	h.Add(Node{key, id})
+}
+
 func (h *MinMaxHeap) Add(n Node) {
 	if h.queryHeap.Size() < h.querySize {
 		h.queryHeap.Add(n)
