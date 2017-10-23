@@ -74,7 +74,7 @@ func (h *Heap) Update(id int, key int) {
 
 func (h *Heap) GetAllNodes() []Node {
 	ret := make([]Node, h.Size())
-	for i := 0; i < h.Size(); i++ {
+	for i := 0; i < len(ret); i++ {
 		ret[i] = *h.Poll()
 	}
 	for i := 0; i < len(ret); i++ {
