@@ -22,11 +22,11 @@ func (t Topic) UpvoteCount() int {
 	return t.upvoteCount
 }
 
-func (t Topic) ReceiveUpvote(n int) {
+func (t *Topic) ReceiveUpvote(n int) {
 	t.upvoteCount += n
 }
 
-func (t Topic) ReceiveDownvote(n int) {
+func (t *Topic) ReceiveDownvote(n int) {
 	t.downvoteCount += n
 }
 

@@ -74,6 +74,10 @@ func (h *MinMaxHeap) Update(id int, key int) {
 }
 
 func (h *MinMaxHeap) checkTopOfTwoHeaps() {
+	if h.queryHeap.Size() == 0 || h.bigHeap.Size() == 0 {
+		return
+	}
+
 	if (h.isQueryMin && h.bigHeap.Peek().Key() < h.queryHeap.Peek().Key()) || (!h.isQueryMin && h.bigHeap.Peek().Key() > h.queryHeap.Peek().Key()) {
 		tmp1 := *h.queryHeap.Poll()
 		tmp2 := *h.bigHeap.Poll()

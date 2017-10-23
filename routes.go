@@ -29,13 +29,13 @@ var routes = []Route{
 	Route{
 		"Upvote",
 		"POST",
-		"/upvote",
+		"/upvote/{topicId}",
 		Upvote,
 	},
 	Route{
 		"Downvote",
 		"POST",
-		"/downvote",
+		"/downvote/{topicId}",
 		Downvote,
 	},
 }
