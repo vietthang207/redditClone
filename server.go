@@ -4,20 +4,26 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"redditClone/routes"
+	"redditClone/databases"
 )
 
 type ServerConfig struct {
-	Port string `json: port`
+	Port      string `json: port`
+	QuerySize int    `json: query_size`
 }
 
 func readConfigFile() ServerConfig {
-	return ServerConfig{"8080"}
+	return ServerConfig{"8080", 20}
 }
 
+var (
+	db *databases.Database
+)
+
 func main() {
-	router := routes.NewRouter()
+	router := NewRouter()
 	config := readConfigFile()
+	db = databases.NewDatabase(config.QuerySize)
 	fmt.Println("Start to serve on port", config.Port)
 	log.Fatal(http.ListenAndServe(":"+config.Port, router))
 }

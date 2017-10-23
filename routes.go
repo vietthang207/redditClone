@@ -1,8 +1,7 @@
-package routes
+package main
 
 import (
 	"net/http"
-	"redditClone/handlers"
 
 	"github.com/gorilla/mux"
 )
@@ -19,25 +18,25 @@ var routes = []Route{
 		"Index",
 		"GET",
 		"/",
-		handlers.Index,
+		Index,
 	},
 	Route{
 		"SubmitTopic",
 		"POST",
 		"/submit",
-		handlers.SubmitTopic,
+		SubmitTopic,
 	},
 	Route{
 		"Upvote",
 		"POST",
 		"/upvote",
-		handlers.Upvote,
+		Upvote,
 	},
 	Route{
 		"Downvote",
 		"POST",
 		"/downvote",
-		handlers.Downvote,
+		Downvote,
 	},
 }
 
