@@ -53,9 +53,17 @@ func (h *Heap) Poll() *Node {
 		return ret
 	}
 	h.nodes[0] = h.nodes[len(h.nodes)-1]
+	h.backPointer[h.nodes[0].Id()] = 0
 	h.nodes = h.nodes[:len(h.nodes)-1]
 	h.moveDown(0)
 	return ret
+}
+
+func (h *Heap) Update(id int, key int) {
+	pos := h.backPointer[id]
+	h.nodes[pos].SetKey(key)
+	h.moveUp(pos)
+	h.moveDown(pos)
 }
 
 func (h Heap) leftChild(parent int) int {
