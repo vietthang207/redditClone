@@ -3,7 +3,7 @@ package indexers
 type Heap struct {
 	isMin       bool
 	nodes       []Node
-	backPointer []int
+	backPointer map[int]int
 }
 
 func NewHeap(isMin bool) *Heap {
@@ -15,7 +15,7 @@ func NewHeapWithCapacity(isMin bool, cap int) *Heap {
 	h.isMin = isMin
 	nodes := make([]Node, 0, cap+1)
 	h.nodes = nodes
-	backPointer := make([]int, 0, cap+1)
+	backPointer := make(map[int]int, cap+1)
 	h.backPointer = backPointer
 	return h
 }
@@ -30,6 +30,7 @@ func (h Heap) IsEmpty() bool {
 
 func (h *Heap) Add(n Node) {
 	h.nodes = append(h.nodes, n)
+	h.backPointer[n.Id()] = len(h.nodes) - 1
 	h.moveUp(h.Size() - 1)
 }
 
@@ -46,6 +47,7 @@ func (h *Heap) Poll() *Node {
 	}
 	tmp := h.Peek()
 	ret := &Node{tmp.Key(), tmp.Id()}
+	delete(h.backPointer, ret.Id())
 	if h.Size() == 1 {
 		h.nodes = h.nodes[:0]
 		return ret
@@ -74,9 +76,8 @@ func (h Heap) isLeaf(pos int) bool {
 
 func (h Heap) swap(pos1, pos2 int) {
 	nodes := h.nodes
-	// tmp := Node{nodes[pos1].Key(), nodes[pos1].Id()}
-	// nodes[pos1] = nodes[pos2]
-	// nodes[pos2] = tmp
+	backPointer := h.backPointer
+	backPointer[nodes[pos1].Id()], backPointer[nodes[pos2].Id()] = pos2, pos1
 	nodes[pos1], nodes[pos2] = nodes[pos2], nodes[pos1]
 }
 
