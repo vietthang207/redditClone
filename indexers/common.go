@@ -1,5 +1,12 @@
 package indexers
 
+import "errors"
+
+var (
+	ErrorNegativeCapacity = errors.New("Capacity need to be non-negative")
+	ErrorIdNotFound       = errors.New("Id not found")
+)
+
 type Comparable interface {
 	Less(Comparable) bool
 }

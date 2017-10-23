@@ -1,14 +1,8 @@
 package indexers
 
-import "errors"
-
 const (
 	minHeap = true
 	maxHeap = false
-)
-
-var (
-	ErrorNegativeCapacity = errors.New("Capacity need to be non-negative")
 )
 
 type Heap struct {
@@ -49,7 +43,8 @@ func (h Heap) Peek() *Node {
 	if h.IsEmpty() {
 		return nil
 	}
-	return &h.nodes[0]
+	tmp := h.nodes[0]
+	return &Node{tmp.Key(), tmp.Id()}
 }
 
 func (h *Heap) Poll() *Node {
@@ -75,6 +70,17 @@ func (h *Heap) Update(id int, key int) {
 	h.nodes[pos].SetKey(key)
 	h.moveUp(pos)
 	h.moveDown(pos)
+}
+
+func (h *Heap) GetAllNodes() []Node {
+	ret := make([]Node, h.Size())
+	for i := 0; i < h.Size(); i++ {
+		ret[i] = *h.Poll()
+	}
+	for i := 0; i < len(ret); i++ {
+		h.Add(ret[i])
+	}
+	return ret
 }
 
 func (h Heap) leftChild(parent int) int {
