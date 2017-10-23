@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 )
 
 func add(i int) {
@@ -23,13 +23,13 @@ func AssertNodeEqual(t *testing.T, i int, a *Node, message string) {
 	utils.AssertEqual(t, Node{i, i}, *a, message)
 }
 func TestNewHeap(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	utils.AssertEqual(t, heap.Size(), 0, "Should start empty")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty")
 	AssertNilNode(t, heap.Peek(), "Should be nil")
 
-	heap = NewHeap(false)
+	heap = NewHeap(maxHeap)
 	utils.AssertEqual(t, heap.Size(), 0, "Should start empty")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty")
@@ -43,7 +43,7 @@ func TestNewHeap(t *testing.T) {
 }
 
 func TestAddMin(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	utils.AssertEqual(t, 0, heap.Size(), "Should start empty.")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty.")
@@ -60,7 +60,7 @@ func TestAddMin(t *testing.T) {
 	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 1, 3: 2}, "Backpointer is wrong")
 	AssertNodeEqual(t, 1, heap.Peek(), "Top value is wrong")
 
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	utils.AssertEqual(t, 0, heap.Size(), "Should start empty.")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty.")
@@ -77,7 +77,7 @@ func TestAddMin(t *testing.T) {
 }
 
 func TestAddMax(t *testing.T) {
-	heap = NewHeap(false)
+	heap = NewHeap(maxHeap)
 	utils.AssertEqual(t, 0, heap.Size(), "Should start empty.")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty.")
@@ -92,7 +92,7 @@ func TestAddMax(t *testing.T) {
 	utils.AssertMap(t, heap.backPointer, map[int]int{1: 1, 2: 2, 3: 0}, "Backpointer is wrong")
 	AssertNodeEqual(t, 3, heap.Peek(), "Top value is wrong")
 
-	heap = NewHeap(false)
+	heap = NewHeap(maxHeap)
 	utils.AssertEqual(t, 0, heap.Size(), "Should start empty.")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty.")
@@ -109,7 +109,7 @@ func TestAddMax(t *testing.T) {
 }
 
 func TestIsEmpty(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	utils.AssertEqual(t, 0, heap.Size(), "Should start empty.")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty.")
@@ -140,7 +140,7 @@ func TestIsEmpty(t *testing.T) {
 }
 
 func TestSize(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	utils.AssertEqual(t, 0, heap.Size(), "Should start empty.")
 	utils.AssertEqual(t, 0, len(heap.backPointer), "Should start empty.")
 	AssertNilNode(t, heap.Peek(), "Should be None.")
@@ -189,7 +189,7 @@ func TestSize(t *testing.T) {
 }
 
 func TestPollMin(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	AssertNilNode(t, heap.Poll(), "Should be None.")
 	add(10)
 	utils.AssertMap(t, heap.backPointer, map[int]int{10: 0}, "Backpointer is wrong")
@@ -264,7 +264,7 @@ func TestPollMin(t *testing.T) {
 }
 
 func TestPollMax(t *testing.T) {
-	heap = NewHeap(false)
+	heap = NewHeap(maxHeap)
 	AssertNilNode(t, heap.Poll(), "Should be None.")
 	add(10)
 	utils.AssertMap(t, heap.backPointer, map[int]int{10: 0}, "Backpointer is wrong")
@@ -339,7 +339,7 @@ func TestPollMax(t *testing.T) {
 }
 
 func TestDuplicateMin(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	add(10)
 	AssertNodeEqual(t, 10, heap.Peek(), "Top value is wrong")
 	add(10)
@@ -398,7 +398,7 @@ func TestDuplicateMin(t *testing.T) {
 }
 
 func TestDuplicateMax(t *testing.T) {
-	heap = NewHeap(false)
+	heap = NewHeap(maxHeap)
 	add(10)
 	AssertNodeEqual(t, 10, heap.Peek(), "Top value is wrong")
 	add(10)
@@ -457,7 +457,7 @@ func TestDuplicateMax(t *testing.T) {
 }
 
 func TestDeepHeapMin(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	add(5)
 	utils.AssertMap(t, heap.backPointer, map[int]int{5: 0}, "Backpointer is wrong")
 	AssertNodeEqual(t, 5, heap.Peek(), "Top value is wrong")
@@ -621,7 +621,7 @@ func TestDeepHeapMin(t *testing.T) {
 	AssertNilNode(t, heap.Peek(), "Should be None.")
 }
 func TestDeepHeapMax(t *testing.T) {
-	heap = NewHeap(false)
+	heap = NewHeap(maxHeap)
 	add(-5)
 	AssertNodeEqual(t, -5, heap.Peek(), "Top value is wrong")
 	add(-7)
@@ -760,7 +760,7 @@ func TestDeepHeapMax(t *testing.T) {
 }
 
 func TestUpdate(t *testing.T) {
-	heap = NewHeap(true)
+	heap = NewHeap(minHeap)
 	add(5)
 	AssertNodeEqual(t, 5, heap.Peek(), "Top value is wrong")
 	add(7)

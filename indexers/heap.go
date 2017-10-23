@@ -1,5 +1,16 @@
 package indexers
 
+import "errors"
+
+const (
+	minHeap = true
+	maxHeap = false
+)
+
+var (
+	ErrorNegativeCapacity = errors.New("Capacity need to be non-negative")
+)
+
 type Heap struct {
 	isMin       bool
 	nodes       []Node
@@ -112,9 +123,6 @@ func (h Heap) moveDown(pos int) {
 	if h.isMin {
 		for !h.isLeaf(pos) {
 			smallChildPos := h.leftChild(pos)
-			if smallChildPos >= h.Size() {
-				break
-			}
 			if h.rightChild(pos) < h.Size() && nodes[h.rightChild(pos)].Less(nodes[smallChildPos]) {
 				smallChildPos = h.rightChild(pos)
 			}
@@ -128,9 +136,6 @@ func (h Heap) moveDown(pos int) {
 	} else {
 		for !h.isLeaf(pos) {
 			bigChildPos := h.leftChild(pos)
-			if bigChildPos >= h.Size() {
-				break
-			}
 			if h.rightChild(pos) < h.Size() && !nodes[h.rightChild(pos)].Less(nodes[bigChildPos]) {
 				bigChildPos = h.rightChild(pos)
 			}

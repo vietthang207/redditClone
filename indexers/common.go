@@ -1,11 +1,5 @@
 package indexers
 
-import "errors"
-
-var (
-	ErrorNegativeCapacity = errors.New("Capacity need to be non-negative")
-)
-
 type Comparable interface {
 	Less(Comparable) bool
 }
