@@ -647,6 +647,7 @@ func TestDeepHeapMax(t *testing.T) {
 	utils.AssertEqual(t, 11, heap.Size(), "")
 	utils.AssertEqual(t, heap.Size(), len(heap.backPointer), "Backpointer and nodes length does not match.")
 	add(-12)
+	utils.AssertMap(t, heap.backPointer, map[int]int{-1: 0, -2: 2, -3: 6, -4: 1, -7: 3, -6: 5, -5: 4, -8: 7, -9: 8, -10: 9, -11: 10, -12: 11}, "Backpointer is wrong")
 	AssertNodeEqual(t, -1, heap.Peek(), "Top value is wrong")
 	utils.AssertEqual(t, 12, heap.Size(), "")
 	utils.AssertEqual(t, heap.Size(), len(heap.backPointer), "Backpointer and nodes length does not match.")
@@ -667,6 +668,7 @@ func TestDeepHeapMax(t *testing.T) {
 	} else {
 		t.Fatal()
 	}
+	utils.AssertMap(t, heap.backPointer, map[int]int{-4: 0, -7: 3, -6: 2, -5: 1, -8: 7, -9: 8, -10: 4, -11: 5, -12: 6}, "Backpointer is wrong")
 	AssertNodeEqual(t, -4, heap.Peek(), "Top value is wrong")
 	utils.AssertEqual(t, 9, heap.Size(), "")
 	utils.AssertEqual(t, heap.Size(), len(heap.backPointer), "Backpointer and nodes length does not match.")
@@ -703,6 +705,7 @@ func TestDeepHeapMax(t *testing.T) {
 		t.Fatal()
 	}
 	add(-1)
+	utils.AssertMap(t, heap.backPointer, map[int]int{-1: 0, -7: 1, -8: 3, -9: 7, -10: 4, -11: 2, -12: 6, -13: 5}, "Backpointer is wrong")
 	AssertNodeEqual(t, -1, heap.Peek(), "Top value is wrong")
 	utils.AssertEqual(t, 8, heap.Size(), "")
 	utils.AssertEqual(t, heap.Size(), len(heap.backPointer), "Backpointer and nodes length does not match.")
@@ -726,6 +729,7 @@ func TestDeepHeapMax(t *testing.T) {
 	} else {
 		t.Fatal()
 	}
+	utils.AssertMap(t, heap.backPointer, map[int]int{-10: 0, -11: 2, -12: 1, -13: 3}, "Backpointer is wrong")
 	if top := heap.Poll(); top != nil {
 		AssertNodeEqual(t, -10, top, "")
 	} else {
@@ -748,8 +752,54 @@ func TestDeepHeapMax(t *testing.T) {
 	} else {
 		t.Fatal()
 	}
+	utils.AssertMap(t, heap.backPointer, map[int]int{}, "Backpointer is wrong")
 	utils.AssertEqual(t, 0, heap.Size(), "Should be empty.")
 	utils.AssertEqual(t, heap.Size(), len(heap.backPointer), "Backpointer and nodes length does not match.")
 	utils.AssertTrue(t, heap.IsEmpty(), "Should be empty.")
 	AssertNilNode(t, heap.Peek(), "Should be None.")
+}
+
+func TestUpdate(t *testing.T) {
+	heap = NewHeap(true)
+	add(5)
+	AssertNodeEqual(t, 5, heap.Peek(), "Top value is wrong")
+	add(7)
+	AssertNodeEqual(t, 5, heap.Peek(), "Top value is wrong")
+	add(6)
+	AssertNodeEqual(t, 5, heap.Peek(), "Top value is wrong")
+	add(3)
+	AssertNodeEqual(t, 3, heap.Peek(), "Top value is wrong")
+	add(4)
+	AssertNodeEqual(t, 3, heap.Peek(), "Top value is wrong")
+	add(2)
+	AssertNodeEqual(t, 2, heap.Peek(), "Top value is wrong")
+	add(1)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 2, 3: 6, 4: 1, 7: 3, 6: 5, 5: 4}, "Backpointer is wrong")
+	AssertNodeEqual(t, 1, heap.Peek(), "Top value is wrong")
+	add(8)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 2, 3: 6, 4: 1, 7: 3, 6: 5, 5: 4, 8: 7}, "Backpointer is wrong")
+	AssertNodeEqual(t, 1, heap.Peek(), "Top value is wrong")
+	add(9)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 2, 3: 6, 4: 1, 7: 3, 6: 5, 5: 4, 8: 7, 9: 8}, "Backpointer is wrong")
+	AssertNodeEqual(t, 1, heap.Peek(), "Top value is wrong")
+	add(10)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 2, 3: 6, 4: 1, 7: 3, 6: 5, 5: 4, 8: 7, 9: 8, 10: 9}, "Backpointer is wrong")
+	AssertNodeEqual(t, 1, heap.Peek(), "Top value is wrong")
+	add(11)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 2, 3: 6, 4: 1, 7: 3, 6: 5, 5: 4, 8: 7, 9: 8, 10: 9, 11: 10}, "Backpointer is wrong")
+	AssertNodeEqual(t, 1, heap.Peek(), "Top value is wrong")
+	utils.AssertEqual(t, 11, heap.Size(), "")
+	utils.AssertEqual(t, 11, len(heap.backPointer), "Should start empty.")
+	add(12)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 0, 2: 2, 3: 6, 4: 1, 7: 3, 6: 5, 5: 4, 8: 7, 9: 8, 10: 9, 11: 10, 12: 11}, "Backpointer is wrong")
+	heap.Update(5, 0)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 1, 2: 2, 3: 6, 4: 4, 7: 3, 6: 5, 5: 0, 8: 7, 9: 8, 10: 9, 11: 10, 12: 11}, "Backpointer is wrong")
+	heap.Update(7, 13)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 1, 2: 2, 3: 6, 4: 4, 7: 7, 6: 5, 5: 0, 8: 3, 9: 8, 10: 9, 11: 10, 12: 11}, "Backpointer is wrong")
+	heap.Update(2, -1)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 1, 2: 0, 3: 6, 4: 4, 7: 7, 6: 5, 5: 2, 8: 3, 9: 8, 10: 9, 11: 10, 12: 11}, "Backpointer is wrong")
+	heap.Update(2, 14)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 1, 2: 6, 3: 2, 4: 4, 7: 7, 6: 5, 5: 0, 8: 3, 9: 8, 10: 9, 11: 10, 12: 11}, "Backpointer is wrong")
+	heap.Update(7, 7)
+	utils.AssertMap(t, heap.backPointer, map[int]int{1: 1, 2: 6, 3: 2, 4: 4, 7: 3, 6: 5, 5: 0, 8: 7, 9: 8, 10: 9, 11: 10, 12: 11}, "Backpointer is wrong")
 }

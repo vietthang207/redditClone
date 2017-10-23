@@ -19,7 +19,7 @@ func (n Node) Key() int {
 	return n.key
 }
 
-func (n Node) SetKey(key int) {
+func (n *Node) SetKey(key int) {
 	n.key = key
 }
 
