@@ -78,3 +78,8 @@ minMaxHeap:
             add to the queryHeap if it is bigger than the top elements of the queryHeap, and move this top element to the 
             
             other heap, thus make sure that the invariant is satisfied.
+
+
+### Testing
+
+Heap and minMaxHeap is tested by heap_test.go and minMaxHeap_test.go
