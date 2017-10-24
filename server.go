@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"redditClone/databases"
 )
 
@@ -24,6 +25,13 @@ func main() {
 	router := NewRouter()
 	config := readConfigFile()
 	db = databases.NewDatabase(config.QuerySize)
-	fmt.Println("Start to serve on port", config.Port)
+	f, err := os.OpenFile("log.log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0666)
+	if err != nil {
+		fmt.Printf("error opening file: %v\n", err)
+	}
+	defer f.Close()
+
+	log.SetOutput(f)
+	log.Println("Start to serve on port", config.Port)
 	log.Fatal(http.ListenAndServe(":"+config.Port, router))
 }

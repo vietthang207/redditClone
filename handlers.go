@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"html/template"
+	"log"
 	"net/http"
 	"redditClone/models"
 	"strconv"
@@ -26,35 +26,35 @@ func convertData(queryResult []models.Topic) []TopicData {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Handle index ")
+	log.Println("Handle index ")
 	mock := convertData(db.GetTopTopics())
 	t := template.New("home.html")
 	t, err := t.ParseFiles("templates/home.html")
-	fmt.Println(err)
+	log.Println(err)
 	t.Execute(w, mock)
 }
 
 func SubmitTopic(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Handle submit ")
+	log.Println("Handle submit ")
 	r.ParseForm()
 	formData := r.PostFormValue("submitText")
-	fmt.Println("Create topic:", formData)
+	log.Println("Create topic:", formData)
 	db.InsertTopic(formData)
-	fmt.Println("Topics count: ", db.Size())
+	log.Println("Topics count: ", db.Size())
 }
 
 func Upvote(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Handle upvote ")
+	log.Println("Handle upvote ")
 	tokens := strings.Split(r.URL.Path, "/")
 	id, _ := strconv.Atoi(tokens[len(tokens)-1])
-	fmt.Println("Upvote ", id)
+	log.Println("Upvote ", id)
 	db.AddUpvote(id)
 }
 
 func Downvote(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("Handle downvote ")
+	log.Println("Handle downvote ")
 	tokens := strings.Split(r.URL.Path, "/")
 	id, _ := strconv.Atoi(tokens[len(tokens)-1])
-	fmt.Println("Downvote ", id)
+	log.Println("Downvote ", id)
 	db.AddDownvote(id)
 }
