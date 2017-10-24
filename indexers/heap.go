@@ -25,11 +25,11 @@ func NewHeapWithCapacity(isMin bool, cap int) *Heap {
 	return h
 }
 
-func (h Heap) Size() int {
+func (h *Heap) Size() int {
 	return len(h.nodes)
 }
 
-func (h Heap) IsEmpty() bool {
+func (h *Heap) IsEmpty() bool {
 	return h.Size() < 1
 }
 
@@ -39,7 +39,7 @@ func (h *Heap) Add(n Node) {
 	h.moveUp(h.Size() - 1)
 }
 
-func (h Heap) Peek() *Node {
+func (h *Heap) Peek() *Node {
 	if h.IsEmpty() {
 		return nil
 	}
@@ -83,30 +83,30 @@ func (h *Heap) GetAllNodes() []Node {
 	return ret
 }
 
-func (h Heap) leftChild(parent int) int {
+func (h *Heap) leftChild(parent int) int {
 	return (parent+1)*2 - 1
 }
-func (h Heap) rightChild(parent int) int {
+func (h *Heap) rightChild(parent int) int {
 	return (parent + 1) * 2
 }
-func (h Heap) parent(child int) int {
+func (h *Heap) parent(child int) int {
 	return (child+1)/2 - 1
 }
-func (h Heap) isRoot(pos int) bool {
+func (h *Heap) isRoot(pos int) bool {
 	return pos == 0
 }
-func (h Heap) isLeaf(pos int) bool {
+func (h *Heap) isLeaf(pos int) bool {
 	return h.leftChild(pos) >= h.Size()
 }
 
-func (h Heap) swap(pos1, pos2 int) {
+func (h *Heap) swap(pos1, pos2 int) {
 	nodes := h.nodes
 	backPointer := h.backPointer
 	backPointer[nodes[pos1].Id()], backPointer[nodes[pos2].Id()] = pos2, pos1
 	nodes[pos1], nodes[pos2] = nodes[pos2], nodes[pos1]
 }
 
-func (h Heap) moveUp(pos int) {
+func (h *Heap) moveUp(pos int) {
 	nodes := h.nodes
 	parentPos := h.parent(pos)
 	if h.isMin {
@@ -124,7 +124,7 @@ func (h Heap) moveUp(pos int) {
 	}
 }
 
-func (h Heap) moveDown(pos int) {
+func (h *Heap) moveDown(pos int) {
 	nodes := h.nodes
 	if h.isMin {
 		for !h.isLeaf(pos) {
